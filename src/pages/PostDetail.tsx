@@ -9,6 +9,7 @@ import { useNavigate, useSearchParams} from 'react-router-dom'
 import { Post } from './PostsView'
 import { Container, Box, Typography, Button, useTheme } from '@mui/material'
 import NavigationBar from '../components/NavigationBar'
+import capitalizer from '../services/capitalizer'
 
 
 // Define the Comment interface
@@ -99,7 +100,7 @@ const PostDetail = () => {
                     padding={theme.spacing(3)}
                     paddingX={theme.breakpoints.up('xs')? theme.spacing(6) : theme.spacing(0)}
                 >
-                    <Typography variant='h4' component='h1' sx={{paddingBottom: 3}}>
+                    <Typography variant='h4' component='h1' sx={{paddingBottom: 3, textTransform: 'capitalize'}}>
                         {post?.title}
                     </Typography>
 
@@ -112,7 +113,7 @@ const PostDetail = () => {
                     
                     
                     <Typography variant='body1' component='p' marginBottom={3}>
-                        {post?.body}
+                        {capitalizer(post?.body)}
                     </Typography>
 
                     <Typography variant='h5' component='h2' sx={{paddingTop: 3, paddingBottom: 3}}>
@@ -121,14 +122,14 @@ const PostDetail = () => {
 
                     {comments.map(comment => (
                         <Container key={comment.id}>
-                            <Typography variant='h6' component='h5'>
+                            <Typography variant='h6' component='h5' sx={{textTransform: 'capitalize'}}>
                                 Title: {comment.name}
                             </Typography>
                             <Typography variant='subtitle2' component='h5' color='gray' marginBottom={1}>
                                 Email: {comment.email}
                             </Typography>
                             <Typography variant='body1' component='p' key={comment.id} marginBottom={3}>
-                                {comment.body}
+                                {capitalizer(comment.body)}
                             </Typography>
                         </Container>
                     ))}
