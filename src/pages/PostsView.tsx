@@ -4,38 +4,31 @@
  */
 
 import { useState, useEffect, useRef } from 'react'
-import axios from 'axios'
 import { Grid, Paper } from '@mui/material'
 import { Container } from '@mui/system'
 import NavigationBar from '../components/NavigationBar'
 import PostCard from '../components/PostCard'
+import { Post } from '../types/model.type'
+import { dataService } from '../services/data.service'
 
-// Define the Post interface export it for using in other components
-export interface Post {
-    userId: number,
-    id: number,
-    title: string,
-    body: string
-}
 
 // Define the PostsView component
 const PostsView = () => {
     const [posts, setPosts] = useState<Post[]>([])
     const [renderPosts, setRenderPosts] = useState<Post[]>([])
     const [page, setPage] = useState(0)
-    const [hasMore, setHasMore] = useState(true)
     const targetObserver = useRef<HTMLDivElement>(null)
 
     // Use the useEffect hook to fetch the posts list from the API
     useEffect(()=> {
-        axios.get('https://jsonplaceholder.typicode.com/posts')
-        .then(response => {
-            setPosts(response.data)
-            setRenderPosts(response.data.slice(0, 20))
-        })
-        .catch( error => {
-            console.log(error.message)
-        })
+        dataService.getAllPosts()
+            .then(response => {
+                setPosts(response.data)
+                setRenderPosts(response.data.slice(0, 20))
+            })
+            .catch( error => {
+                console.log(error.message)
+            })
     }, [])
 
     // Define the handleObserver function
@@ -43,7 +36,6 @@ const PostsView = () => {
         const target = entities[0]
         if ( target.isIntersecting ) {
             if ( page != 0 && page * 20 > posts.length ) {
-                setHasMore(false)
                 return
             }
             setRenderPosts(posts.slice(0, (page + 1) * 20))

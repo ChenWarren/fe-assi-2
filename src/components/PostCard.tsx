@@ -5,8 +5,8 @@
  */ 
 
 import { Card, CardHeader, CardContent, Typography, Button } from '@mui/material'
-import { Post } from '../pages/PostsView'
-import capitalizer from '../services/capitalizer'
+import { Post } from '../types/model.type'
+import capitalizer from '../utils/capitalizer'
 
 const PostCard = ({ post }: { post: Post }) => {
 

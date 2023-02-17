@@ -4,47 +4,13 @@
  */
 
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import { useNavigate, useSearchParams} from 'react-router-dom'
-import { Post } from './PostsView'
 import { Container, Box, Typography, Button, useTheme } from '@mui/material'
 import NavigationBar from '../components/NavigationBar'
-import capitalizer from '../services/capitalizer'
+import capitalizer from '../utils/capitalizer'
+import { Post, Comment, User } from '../types/model.type'
+import { dataService } from '../services/data.service'
 
-
-// Define the Comment interface
-interface Comment {
-    postId: number,
-    id: number,
-    name: string,
-    email: string,
-    body: string
-}
-
-// Define the User interface
-interface User {
-    id: number,
-    name: string,
-    username: string,
-    email: string,
-    address: {
-        street: string,
-        suite: string,
-        city: string,
-        zipcode: string,
-        geo: {
-            lat: string,
-            lng: string
-        }
-    },
-    phone: string,
-    website: string,
-    company: {
-        name: string,
-        catchPhrase: string,
-        bs: string
-    }
-}
 
 // Define the PostDetail component
 const PostDetail = () => {
@@ -60,29 +26,34 @@ const PostDetail = () => {
     useEffect(()=> {
         const id = searchParams.get('id')
         const userID = searchParams.get('userID')
-        axios.get('https://jsonplaceholder.typicode.com/posts/'+id)
-        .then(response => {
-            setPost(response.data)
-        })
-        .catch( error => {
-            console.log(error.message)
-        })
 
-        axios.get('https://jsonplaceholder.typicode.com/comments?postId='+id)
-        .then(response => {
-            setComments(response.data)
-        })
-        .catch( error => {
-            console.log(error.message)
-        })
+        if(id){
+            dataService.getPostById(id)
+                .then(response => {
+                    setPost(response.data)
+                })
+                .catch( error => {
+                    console.log(error.message)
+                })
 
-        axios.get('https://jsonplaceholder.typicode.com/users/'+userID)
-        .then(response => {
-            setUser(response.data)
-        })
-        .catch( error => {
-            console.log(error.message)
-        })
+            dataService.getCommentsByPostId(id)
+                .then(response => {
+                    setComments(response.data)
+                })
+                .catch( error => {
+                    console.log(error.message)
+                })
+        }
+
+        if(userID){
+            dataService.getUserByUserId(userID)
+                .then(response => {
+                    setUser(response.data)
+                })
+                .catch( error => {
+                    console.log(error.message)
+                })
+        }
 
     }, [])
 
