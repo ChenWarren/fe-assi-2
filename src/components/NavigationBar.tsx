@@ -3,10 +3,7 @@
  */
 
 import { AppBar, Toolbar, Typography } from "@mui/material"
-
-interface NavBarProps {
-    title: string
-}
+import {NavBarProps} from "../types/props.type"
 
 const NavigationBar = ({title = 'Posts'}: NavBarProps) => {
     return (
