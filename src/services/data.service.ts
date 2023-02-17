@@ -1,11 +1,12 @@
 /**
- * Fetches data from the server
+ * Define the DataService class with all the methods
  */
 
 import http from '../utils/http-init'
 import { Post, User, Comment } from '../types/model.type'
 
-// Define the DataService class with all the methods
+
+// Define the DataService class
 class DataService {
     getAllPosts() {
         return http.get<Post[]>(`/posts`)
